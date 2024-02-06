@@ -38,10 +38,22 @@ public class QueryDslRepo {
                 .build());
 
         // QItem은 엔티티 그리고 엔티티가 가질 수 있는 속성을 나타낸다.
+        /*
+            SELECT i
+            FROM Item i
+            WHERE i.name = :name
+        */
         QItem qItem = new QItem("item");
-        List<Item> items = queryFactory.select(qItem)
+        List<Item> items = queryFactory
+                // SELECT절을 추가
+                .select(qItem)
+                // FROM절을 추가
                 .from(qItem)
+                // WHERE절을 추가
+                .where(qItem.name.eq("new item"))
+                // 결과 조회
                 .fetch();
+
 
         for (Item item: items) {
             log.info("{}: {} ({})", item.getName(), item.getPrice(), item.getStock());
